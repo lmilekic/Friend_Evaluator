@@ -1,28 +1,23 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-<link type="text/css" rel="stylesheet" href="stylesheet.css"/>
-	</head>
-		<h1> Friend Evaluator</h1>
-<!-- <%@scores.each do |person|%> -->
-	<header>
-	
+<head>
+  <link type="text/css" rel="stylesheet" href="stylesheet.css"/>
+</head>
+<h1> Friend Evaluator</h1>
+
+<header>
+
 </header>
 <title>Friend Evaluator</title>
-	<body>	
+<body>
+  <%@scores.each do |person|%>
+  <!--  </br> -->
+  <p> <%=person['name']%>
+    <%=person['happiness']%>
+  </p>
 
-<!-- <%=person['name']%> </br> -->
-	<p> Chris Hadfield
-	0.9503
-	</p>
+  <% end %>
 
-	<p> Amanda Palmer 0.9402
-		
-		</p>
-
-
-	<!-- <% end %> -->
-
-	</body>
+</body>
 </html>
