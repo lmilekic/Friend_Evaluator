@@ -1,64 +1,39 @@
 require 'sinatra'
-require 'rubygems'
 require 'oauth'
 require 'json'
+require 'indico'
+require_relative 'twitter.rb'
+before do
+  Indico.api_key = 'e693133164829165603f11c4bcd8c156'
+end
 
 get '/:name' do
-  tweets = get_tweets(params['name'])
-  tweets_with_scores = {}
-  tweets.each do |tweet|
-    tweets_with_scores[tweet['user']['screen_name']] = 50
+
+  tweets_with_scores = []
+  friends = get_friends(params['name'])
+  friends.to_s
+  friends.each do |friend|
+    friend_info = {}
+    friend_info['name'] = friend['name']
+    friend_info['screen_name'] = friend['screen_name']
+    friend_info['happiness'] = get_happiness(friend['screen_name'])
+    tweets_with_scores << friend_info
   end
-  @scores = tweets_with_scores.to_json
+  @scores = tweets_with_scores#.to_json
   erb :index
 end
 
-
-def get_tweets(screen_name)
-
-  # Now you will fetch /1.1/statuses/user_timeline.json,
-  # returns a list of public Tweets from the specified
-  # account.
-  baseurl = "https://api.twitter.com"
-  path    = "/1.1/statuses/user_timeline.json"
-  query   = URI.encode_www_form(
-  "screen_name" => "#{screen_name}",
-  "count" => 5,
-  )
-  address = URI("#{baseurl}#{path}?#{query}")
-  request = Net::HTTP::Get.new address.request_uri
-
-  # Print data about a list of Tweets
-  def print_timeline(tweets)
-    tweets.each do |tweet|
-      puts tweet
-      puts
-    end
-
+def full_tweet_text(screen_name)
+  tweets = get_tweets(screen_name)
+  result = []
+  tweets.each do |tweet|
+    result << tweet['text']
   end
+  result
+end
 
-  # Set up HTTP.
-  http             = Net::HTTP.new address.host, address.port
-  http.use_ssl     = true
-  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-
-  # If you entered your credentials in the first
-  # exercise, no need to enter them again here. The
-  # ||= operator will only assign these values if
-  # they are not already set.
-  consumer_key ||= OAuth::Consumer.new "aL34AMzbNHnf7q46gLg0LgdHg", "ZdWiZGUxBRIHDQQhoHrAN928eGCgQydCn0eu1zIxwAQ350tsew"
-  access_token ||= OAuth::Token.new "1297451042-zToT2tLLH30uOdVJIR4Tc6Y5RbazkfbMQTBIjLm", "WOslSrfn9pYrvdTYI8PuRmG9s2BHOxABSQSAK7Y8QWK6V"
-
-  # Issue the request.
-  request.oauth! http, consumer_key, access_token
-  http.start
-  response = http.request request
-
-  # Parse and print the Tweet if the response code was 200
-  tweets = nil
-  if response.code == '200' then
-    tweets = JSON.parse(response.body)
-    print_timeline(tweets)
-  end
-  tweets
+def get_happiness(screen_name)
+  arr = Indico.batch_sentiment(full_tweet_text(screen_name))
+  arr.inject{|sum, el| sum + el}.to_f / arr.size
+  #puts Indico.sentiment("best day ever")
 end
