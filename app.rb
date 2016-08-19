@@ -9,6 +9,7 @@ before do
   @access_token = "AAAAAAAAAAAAAAAAAAAAAMXMfAAAAAAAD7cHhWl8SxqFC3AylZRm%2B9y%2B%2Bqk%3DBrVfD54C1vHeG2vZ6aFwBQPL7tUB3cMKulkrevcvEgMxzuDD6r"
 end
 #access_token=>"AAAAAAAAAAAAAAAAAAAAAMXMfAAAAAAAD7cHhWl8SxqFC3AylZRm%2B9y%2B%2Bqk%3DBrVfD54C1vHeG2vZ6aFwBQPL7tUB3cMKulkrevcvEgMxzuDD6r"
+set :port, 8000
 get '/' do
   #test_crap
   #get_bearer_token
