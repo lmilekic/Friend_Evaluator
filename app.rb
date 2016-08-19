@@ -27,7 +27,7 @@ get '/search' do
     friend_info['happiness'] = get_happiness(friend['screen_name'])
     tweets_with_scores << friend_info
   end
-  @scores = tweets_with_scores#.to_json
+  @scores = tweets_with_scores#.to_json 
   erb :search
 end
 
