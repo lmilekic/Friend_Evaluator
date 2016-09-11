@@ -11,10 +11,13 @@
   <h1>Friend Evaluator</h1>
 </br>
 <form action="/search" method="GET">
-  SEARCH:
+  Username:
   <input type="text" name="name">
   <input type="submit">
 </form>
+<%if flash[:error] != nil then%>
+  <%=flash[:error]%>
+<%end%>
   <%=yield%>
 </body>
 </html>

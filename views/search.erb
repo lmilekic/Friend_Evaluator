@@ -1,19 +1,29 @@
 
-<%@scores.each do |person|%>
-  <p> <%=person['name']%>
-    <%=person['happiness']%>
-    <%if person['happiness'] >= 0.5 %>
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" aria-valuenow="<%=person['happiness']*100-50%>" aria-valuemin="0" aria-valuemax="50" style="width: <%=person['happiness']*100-50%>%;">
-        <%=(person['happiness']*100-50).round%> happy points! :D
+<table class="table table-striped">
+  <tbody>
+  <%@scores.each do |person|%>
+  <tr>
+    <td>
+    <p>
+    <img src="<%=person['profile_pic']%>" />
+      <%=person['name']%>
+      <!--<%=person['happiness']%>-->
+      <%if person['happiness'] >= 0.5 %>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="<%=person['happiness']*100-50%>" aria-valuemin="0" aria-valuemax="50" style="width: <%=person['happiness']*100-50%>%;">
+          <%=(person['happiness']*100-50).round%> happy points! :D
+        </div>
       </div>
-    </div>
-    <% else %>
-    <div class="progress">
-      <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<%=50-person['happiness']*100%>" aria-valuemin="0" aria-valuemax="50" style="width: <%=50-person['happiness']*100%>%;">
-        <%=(50-person['happiness']*100).round%> sad points :(
+      <% else %>
+      <div class="progress">
+        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<%=50-person['happiness']*100%>" aria-valuemin="0" aria-valuemax="50" style="width: <%=50-person['happiness']*100%>%;">
+          <%=(50-person['happiness']*100).round%> sad points :(
+        </div>
       </div>
-    </div>
-    <% end %>
-  </p>
-<% end %>
+      <% end %>
+    </p>
+  <% end %>
+  </tr>
+</td>
+</tbody>
+</table>
